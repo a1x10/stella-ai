@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Стелла — AI-агент для браузера</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <header class="nav-wrap">
+    <nav class="nav-glass">
+      <a href="#" class="nav-brand">
+        <span class="mini-orb"></span>
+        <span>Стелла</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Возможности</a>
+        <a href="#browsers">Браузеры</a>
+        <a href="#install">Установка</a>
+      </div>
+      <a href="downloads/Stella-Installer.bat" download class="nav-cta">Скачать</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="orb-stage">
+        <div class="orb-glow"></div>
+        <div class="orb">
+          <div class="orb-mesh"></div>
+          <div class="orb-specular"></div>
+        </div>
+      </div>
+
+      <span class="hero-pill">v3.0 • Multi-Agent • Recorder • CDP</span>
+      <h1 class="hero-title">Стелла управляет браузером за вас.</h1>
+      <p class="hero-sub">
+        Несколько автономных AI-агентов с именными курсорами, прозрачные ответы при наведении на любой вопрос и умная экономия кредитов.
+      </p>
+
+      <div class="hero-actions">
+        <a href="downloads/Stella-Installer.bat" download class="btn-primary">
+          <span>Скачать установщик (Windows)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14"/>
+          </svg>
+        </a>
+        <a href="downloads/stella-extension.zip" download class="btn-secondary">
+          ZIP-архив расширения
+        </a>
+      </div>
+
+      <p class="hero-note">Поддерживает Chrome, Edge, Яндекс.Браузер, Brave и Opera</p>
+    </section>
+
+    <!-- Features Bento -->
+    <section class="section" id="features">
+      <div class="bento">
+        <article class="card">
+          <div class="card-badge blue">Мульти-агентность</div>
+          <h3>Несколько агентов сразу</h3>
+          <p>Стелла сама решает, когда запустить команду параллельных агентов (Nova, Vega, Lumi), раскладывая их по цветным группам вкладок.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-badge purple">Всегда под рукой</div>
+          <h3>Прозрачный ответ при наведении</h3>
+          <p>Наведите курсор на вопрос на любом сайте — рядом появится стеклянная подсказка с ответом и кнопкой «Нажать ответ».</p>
+        </article>
+
+        <article class="card">
+          <div class="card-badge green">Экономия 90%</div>
+          <h3>Локальный движок + DeepSeek</h3>
+          <p>Математика, навигация и кэш работают с 0 затрат, а сложные вопросы мгновенно решает сверхдешёвый DeepSeek через OpenRouter.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-badge pink">Точность CDP</div>
+          <h3>Живая мышка и отладчик</h3>
+          <p>Плавные траектории курсора, Dynamic Island, скриншоты фоновых вкладок и реальные клики через Chrome DevTools Protocol.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Multi-Browser Selector -->
+    <section class="section" id="browsers">
+      <div class="glass-panel">
+        <h2>Выберите ваш браузер</h2>
+        <p class="panel-sub">Стелла работает на всех браузерах на базе Chromium</p>
+
+        <div class="browser-tabs" id="browserTabs">
+          <button class="b-tab active" data-browser="chrome">Google Chrome</button>
+          <button class="b-tab" data-browser="edge">Microsoft Edge</button>
+          <button class="b-tab" data-browser="yandex">Яндекс.Браузер</button>
+          <button class="b-tab" data-browser="brave">Brave</button>
+          <button class="b-tab" data-browser="opera">Opera</button>
+        </div>
+
+        <div class="install-box" id="install">
+          <ol class="steps" id="browserSteps">
+            <li>Скачайте <strong>Stella-Installer.bat</strong> (или распакуйте <strong>stella-extension.zip</strong>).</li>
+            <li>Откройте <code id="extUrl">chrome://extensions</code> и включите <strong>Режим разработчика</strong>.</li>
+            <li>Перетащите папку <code>Stella-AI</code> в окно расширений — готово!</li>
+          </ol>
+          <div class="install-actions">
+            <button class="btn-small" id="copyUrlBtn">Скопировать chrome://extensions</button>
+            <a href="downloads/Stella-Installer.bat" download class="btn-small primary">Скачать установщик</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Стелла AI • Создано с Apple Liquid Glass эстетикой</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
