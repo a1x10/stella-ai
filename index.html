@@ -21,10 +21,10 @@
       </a>
       <div class="nav-links">
         <a href="#features">Возможности</a>
+        <a href="#cloud">Облако & MCP</a>
         <a href="#browsers">Браузеры</a>
-        <a href="#install">Установка</a>
       </div>
-      <a href="downloads/Stella-Installer.bat" download class="nav-cta">Скачать</a>
+      <a href="#cloud" class="nav-cta" id="navProfileBtn">Войти</a>
     </nav>
   </header>
 
@@ -86,6 +86,80 @@
           <h3>Живая мышка и отладчик</h3>
           <p>Плавные траектории курсора, Dynamic Island, скриншоты фоновых вкладок и реальные клики через Chrome DevTools Protocol.</p>
         </article>
+      </div>
+    </section>
+
+    <!-- Cloud Profile, Auth & MCP Dashboard -->
+    <section class="section" id="cloud">
+      <div class="glass-panel">
+        <span class="hero-pill">Stella Cloud • MCP Hub • 24/7</span>
+        <h2>Личный кабинет и облачные агенты</h2>
+        <p class="panel-sub">Подключайте официальные MCP-серверы, Telegram и Discord — задачи работают в облаке, даже когда ноутбук выключен.</p>
+
+        <!-- Auth View -->
+        <div id="authPanel" class="cloud-box">
+          <div class="oauth-row">
+            <button class="oauth-btn" data-oauth="Google">G Google</button>
+            <button class="oauth-btn" data-oauth="Telegram">✈ Telegram</button>
+            <button class="oauth-btn" data-oauth="Discord">◈ Discord</button>
+          </div>
+          <div class="divider"><span>или по Email</span></div>
+          <div class="form-grid">
+            <input type="text" id="siteName" placeholder="Ваше имя (для регистрации)" />
+            <input type="email" id="siteEmail" placeholder="Email" />
+            <input type="password" id="sitePass" placeholder="Пароль (от 4 символов)" />
+            <select id="siteCountry">
+              <option value="KZ">🇰🇿 Казахстан — Kundelik.kz, BilimLand, eGov</option>
+              <option value="RU" selected>🇷🇺 Россия — Дневник.ру, МЭШ, Госуслуги</option>
+              <option value="OTHER">🌍 Другая страна — Global Workspace</option>
+            </select>
+          </div>
+          <label class="consent-row">
+            <input type="checkbox" id="siteConsent" checked />
+            <span>Даю согласие на запуск облачных задач Стеллы и подключение авторизованных MCP/API интеграций.</span>
+          </label>
+          <div class="install-actions" style="justify-content:center;margin-top:14px;">
+            <button class="btn-small primary" id="siteRegBtn">Создать профиль</button>
+            <button class="btn-small" id="siteLoginBtn">Войти</button>
+          </div>
+          <p id="siteAuthStatus" class="status-msg"></p>
+        </div>
+
+        <!-- Logged-In Dashboard -->
+        <div id="dashPanel" class="cloud-box hidden">
+          <div class="dash-top">
+            <div>
+              <h3 id="dashUserTitle">Профиль</h3>
+              <p id="dashUserMeta" class="panel-sub" style="margin:2px 0 0;"></p>
+            </div>
+            <button class="btn-small" id="siteLogoutBtn">Выйти</button>
+          </div>
+
+          <div class="presets-row" id="dashPresets"></div>
+
+          <div class="dash-grid">
+            <div class="sub-card">
+              <h4>☁️ Облачный агент (24/7)</h4>
+              <textarea id="cloudPrompt" rows="3" placeholder="Например: подготовь план на день и отправь мне в Telegram..."></textarea>
+              <button class="btn-small primary" id="runCloudTaskBtn" style="margin-top:8px;width:100%;">Запустить в облаке</button>
+              <div id="cloudTasksList" class="tasks-list"></div>
+            </div>
+
+            <div class="sub-card">
+              <h4>🔌 Подключить MCP / Telegram / Discord</h4>
+              <select id="connType">
+                <option value="mcp">MCP Сервер (JSON-RPC HTTP)</option>
+                <option value="telegram">Telegram Bot API</option>
+                <option value="discord">Discord Webhook</option>
+              </select>
+              <input type="text" id="connName" placeholder="Название (напр. Мой VPS MCP)" />
+              <input type="text" id="connField1" placeholder="URL MCP-сервера / Bot Token / Webhook URL" />
+              <input type="text" id="connField2" placeholder="API Key (опц.) или Chat ID для Telegram" />
+              <button class="btn-small primary" id="addConnBtn" style="margin-top:6px;width:100%;">Привязать интеграцию</button>
+              <div id="connsList" class="tasks-list"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

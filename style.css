@@ -429,3 +429,33 @@ body {
 @media (max-width: 600px) {
   .nav-links { display: none; }
 }
+
+/* Stella Cloud Auth & Dashboard */
+.hidden { display: none !important; }
+.cloud-box { max-width: 760px; margin: 0 auto; text-align: left; }
+.oauth-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.oauth-btn {
+  padding: 9px 18px; border-radius: 999px; border: 1px solid var(--border);
+  background: #ffffff; color: var(--text); font-size: 13.5px; font-weight: 600;
+  cursor: pointer; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); transition: transform 0.2s var(--bounce);
+}
+.oauth-btn:hover { transform: translateY(-2px); border-color: #007aff; }
+.divider { text-align: center; margin: 12px 0; color: var(--muted); font-size: 12.5px; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.cloud-box input[type="text"], .cloud-box input[type="email"], .cloud-box input[type="password"], .cloud-box select, .cloud-box textarea {
+  width: 100%; padding: 10px 13px; border-radius: 13px; border: 1px solid var(--border);
+  background: #f6f7fb; color: var(--text); font-family: inherit; font-size: 13.5px; outline: none;
+}
+.cloud-box input:focus, .cloud-box select:focus, .cloud-box textarea:focus { border-color: #007aff; background: #fff; }
+.consent-row { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; font-size: 12.5px; color: var(--muted); cursor: pointer; }
+.status-msg { text-align: center; margin-top: 10px; font-size: 13px; color: #0066d6; min-height: 18px; }
+.dash-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.presets-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.preset-chip { padding: 4px 11px; border-radius: 999px; background: rgba(0, 122, 255, 0.09); color: #0066d6; font-size: 12px; font-weight: 600; }
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+.sub-card { padding: 16px; border-radius: 20px; background: #f6f7fb; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+.sub-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.tasks-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; max-height: 240px; overflow-y: auto; }
+.task-item { padding: 10px 12px; border-radius: 13px; background: #ffffff; border: 1px solid var(--border); font-size: 13px; }
+.task-item strong { display: block; margin-bottom: 4px; color: var(--text); }
+.task-item p { color: var(--muted); white-space: pre-wrap; font-size: 12.5px; }
