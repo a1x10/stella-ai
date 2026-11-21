@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Личный кабинет — Стелла AI</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .account-shell {
+      max-width: 920px;
+      margin: 28px auto 64px;
+      padding: 0 20px;
+    }
+    .auth-card {
+      max-width: 460px;
+      margin: 36px auto 0;
+      padding: 32px 28px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(28px) saturate(190%);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      text-align: center;
+    }
+    .auth-orb {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #32ade6, #007aff, #5856d6, #af52de, #ff2d55, #32ade6);
+      box-shadow: 0 10px 26px rgba(88, 86, 214, 0.3), inset 0 3px 8px rgba(255, 255, 255, 0.85);
+      animation: spin 7s linear infinite;
+    }
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 4px;
+      border-radius: 14px;
+      background: #f1f3f8;
+      margin: 18px 0 16px;
+    }
+    .seg-btn {
+      padding: 9px 12px;
+      border: none;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+    .seg-btn.active {
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    }
+    .provider-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .prov-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 12px;
+      border-radius: 13px;
+      border: 1px solid rgba(15, 23, 42, 0.09);
+      background: #ffffff;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s var(--bounce), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .prov-btn:hover {
+      transform: translateY(-1px);
+      border-color: #007aff;
+      box-shadow: 0 6px 16px rgba(0, 122, 255, 0.12);
+    }
+    .prov-btn.primary-dark {
+      grid-column: 1 / -1;
+      background: #1d1d1f;
+      border-color: #1d1d1f;
+      color: #ffffff;
+    }
+    .prov-btn.google-live {
+      border-color: rgba(0, 122, 255, 0.35);
+      background: linear-gradient(180deg, #ffffff, #f4f8ff);
+    }
+    .auth-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      text-align: left;
+      margin-top: 10px;
+    }
+    .auth-fields input, .auth-fields select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 13px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      background: #f6f7fb;
+      color: var(--text);
+      font-size: 13.5px;
+      outline: none;
+    }
+    .auth-fields input:focus, .auth-fields select:focus {
+      border-color: #007aff;
+      background: #ffffff;
+    }
+    .auth-submit {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #007aff, #5856d6, #af52de);
+      color: #fff;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 122, 255, 0.25);
+    }
+    .ws-tabs {
+      display: inline-flex;
+      gap: 6px;
+      padding: 5px;
+      border-radius: 999px;
+      background: #f1f3f8;
+      margin-bottom: 18px;
+    }
+    .ws-tab {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .ws-tab.active {
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <header class="nav-wrap">
+    <nav class="nav-glass">
+      <a href="index.html" class="nav-brand">
+        <span class="mini-orb"></span>
+        <span>Стелла</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">← На главную</a>
+        <a href="downloads/Stella-Installer.bat" download>Скачать установщик</a>
+      </div>
+      <span class="nav-cta" id="headerUserChip">Личный кабинет</span>
+    </nav>
+  </header>
+
+  <main class="account-shell">
+    <!-- 1. DEDICATED AUTH CARD (LOGIN / REGISTER + APP PICKER) -->
+    <section id="authView" class="auth-card">
+      <div class="auth-orb"></div>
+      <h1 style="font-size:24px;font-weight:700;letter-spacing:-0.025em;">Личный кабинет Стеллы</h1>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:4px;">Выберите сервис входа или создайте аккаунт</p>
+
+      <div class="segmented">
+        <button class="seg-btn active" id="tabLogin">Войти</button>
+        <button class="seg-btn" id="tabRegister">Регистрация</button>
+      </div>
+
+      <!-- App / Provider Picker -->
+      <div class="provider-grid">
+        <button class="prov-btn google-live" data-oauth="google">G Войти через Google</button>
+        <button class="prov-btn" id="passkeyBtn">🔑 Face ID / Hello</button>
+        <button class="prov-btn" data-oauth="github">⌘ GitHub</button>
+        <button class="prov-btn" data-oauth="microsoft">⊞ Microsoft</button>
+        <button class="prov-btn" data-oauth="telegram">✈ Telegram</button>
+        <button class="prov-btn" data-oauth="discord">◈ Discord</button>
+        <button class="prov-btn primary-dark" id="quickOneClickBtn">⚡ Быстрый вход в 1 клик</button>
+      </div>
+
+      <div class="divider"><span>или по Email</span></div>
+
+      <div class="auth-fields">
+        <input type="text" id="siteName" class="reg-only hidden" placeholder="Ваше имя" />
+        <input type="email" id="siteEmail" placeholder="Email" />
+        <input type="password" id="sitePass" placeholder="Пароль (от 4 символов)" />
+        <select id="siteCountry" class="reg-only hidden">
+          <option value="KZ">🇰🇿 Казахстан — Kundelik.kz, BilimLand, eGov</option>
+          <option value="RU" selected>🇷🇺 Россия — Дневник.ру, МЭШ, Госуслуги</option>
+          <option value="OTHER">🌍 Другая страна — Global Workspace</option>
+        </select>
+        <label class="consent-row reg-only hidden">
+          <input type="checkbox" id="siteConsent" checked />
+          <span>Даю согласие на запуск облачных задач и подключение официальных MCP/API.</span>
+        </label>
+      </div>
+
+      <button class="auth-submit" id="authSubmitBtn">Войти</button>
+      <p id="siteAuthStatus" class="status-msg"></p>
+    </section>
+
+    <!-- 2. DEDICATED PERSONAL ACCOUNT WORKSPACE (WHEN SIGNED IN) -->
+    <section id="dashView" class="glass-panel hidden" style="text-align:left;">
+      <div class="dash-top">
+        <div>
+          <h2 id="dashUserTitle" style="font-size:24px;">Личный кабинет</h2>
+          <p id="dashUserMeta" class="panel-sub" style="margin:2px 0 0;"></p>
+        </div>
+        <button class="btn-small" id="siteLogoutBtn">Выйти</button>
+      </div>
+
+      <div class="ws-tabs" id="wsTabs">
+        <button class="ws-tab active" data-ws="agents">☁️ Облачные агенты</button>
+        <button class="ws-tab" data-ws="mcps">🏭 Заводские MCP (24)</button>
+        <button class="ws-tab" data-ws="profile">👤 Профиль и регион</button>
+      </div>
+
+      <!-- TAB 1: Cloud Agents 24/7 -->
+      <div id="ws-agents">
+        <div class="dash-grid">
+          <div class="sub-card">
+            <h4>☁️ Запустить облачного агента (24/7)</h4>
+            <select id="cloudAgentRole">
+              <option value="manus">🧠 Manus Research Agent (Автономный)</option>
+              <option value="google">🔵 Google Workspace Agent</option>
+              <option value="microsoft">🟦 Microsoft 365 Agent</option>
+              <option value="mail">✉️ Почтовый агент (Все почты)</option>
+              <option value="messengers">💬 Мессенджер-агент (TG/WhatsApp/Discord)</option>
+              <option value="search">🔎 Поисковый агент (Wiki/DuckDuckGo/Web)</option>
+              <option value="automation">⚡ Агент автоматизаций (n8n/Make/GitHub)</option>
+              <option value="study">🎓 Учебный агент (Kundelik/Дневник.ру)</option>
+            </select>
+            <textarea id="cloudPrompt" rows="3" placeholder="Напишите задачу — она выполнится в облаке даже при выключенном ПК..."></textarea>
+            <button class="btn-small primary" id="runCloudTaskBtn" style="margin-top:6px;width:100%;">Запустить в облаке</button>
+          </div>
+          <div class="sub-card">
+            <h4>📋 История облачных задач</h4>
+            <div id="cloudTasksList" class="tasks-list" style="max-height:260px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Factory MCP Store (24) -->
+      <div id="ws-mcps" class="hidden">
+        <div class="browser-tabs" id="mcpFilterTabs" style="justify-content:flex-start;margin-bottom:14px;">
+          <button class="b-tab active" data-cat="all">Все (24)</button>
+          <button class="b-tab" data-cat="builtin">Бесплатные (0-клик)</button>
+          <button class="b-tab" data-cat="google">Google</button>
+          <button class="b-tab" data-cat="microsoft">Microsoft</button>
+          <button class="b-tab" data-cat="messengers">Мессенджеры</button>
+          <button class="b-tab" data-cat="mail">Почта</button>
+          <button class="b-tab" data-cat="search">Поисковики</button>
+          <button class="b-tab" data-cat="agents">Manus & Агенты</button>
+          <button class="b-tab" data-cat="automation">Автоматизации</button>
+        </div>
+        <div id="mcpCatalogGrid" class="mcp-grid"></div>
+      </div>
+
+      <!-- TAB 3: Profile, Region & Connected MCPs -->
+      <div id="ws-profile" class="hidden">
+        <div class="dash-grid">
+          <div class="sub-card">
+            <h4>🌍 Региональные сервисы</h4>
+            <div class="presets-row" id="dashPresets"></div>
+            <p style="font-size:12.5px;color:var(--muted);">Эти сервисы автоматически учитываются агентами Стеллы в вашем профиле.</p>
+          </div>
+          <div class="sub-card">
+            <h4>🔌 Активные подключения</h4>
+            <div id="connsList" class="tasks-list" style="max-height:240px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="account.js"></script>
+</body>
+</html>

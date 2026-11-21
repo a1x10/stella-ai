@@ -15,16 +15,16 @@
 
   <header class="nav-wrap">
     <nav class="nav-glass">
-      <a href="#" class="nav-brand">
+      <a href="index.html" class="nav-brand">
         <span class="mini-orb"></span>
         <span>Стелла</span>
       </a>
       <div class="nav-links">
         <a href="#features">Возможности</a>
-        <a href="#cloud">Облако & MCP</a>
         <a href="#browsers">Браузеры</a>
+        <a href="#install">Установка</a>
       </div>
-      <a href="#cloud" class="nav-cta" id="navProfileBtn">Войти</a>
+      <a href="account.html" class="nav-cta" id="navAccountBtn">Личный кабинет</a>
     </nav>
   </header>
 
@@ -39,10 +39,10 @@
         </div>
       </div>
 
-      <span class="hero-pill">v3.0 • Multi-Agent • Recorder • CDP</span>
+      <span class="hero-pill">v3.5 • Multi-Agent • MCP • Cloud 24/7</span>
       <h1 class="hero-title">Стелла управляет браузером за вас.</h1>
       <p class="hero-sub">
-        Несколько автономных AI-агентов с именными курсорами, прозрачные ответы при наведении на любой вопрос и умная экономия кредитов.
+        Несколько автономных AI-агентов с именными курсорами, прозрачные ответы при наведении на любой вопрос и 24 заводских MCP в облаке.
       </p>
 
       <div class="hero-actions">
@@ -52,8 +52,8 @@
             <path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14"/>
           </svg>
         </a>
-        <a href="downloads/stella-extension.zip" download class="btn-secondary">
-          ZIP-архив расширения
+        <a href="account.html" class="btn-secondary">
+          Личный кабинет
         </a>
       </div>
 
@@ -78,114 +78,14 @@
         <article class="card">
           <div class="card-badge green">Экономия 90%</div>
           <h3>Локальный движок + DeepSeek</h3>
-          <p>Математика, навигация и кэш работают с 0 затрат, а сложные вопросы мгновенно решает сверхдешёвый DeepSeek через OpenRouter.</p>
+          <p>Математика, запись сценариев и кэш работают с 0 затрат, а сложные вопросы мгновенно решает сверхдешёвый DeepSeek.</p>
         </article>
 
         <article class="card">
-          <div class="card-badge pink">Точность CDP</div>
-          <h3>Живая мышка и отладчик</h3>
-          <p>Плавные траектории курсора, Dynamic Island, скриншоты фоновых вкладок и реальные клики через Chrome DevTools Protocol.</p>
+          <div class="card-badge pink">Облако & MCP</div>
+          <h3>24 заводских MCP 24/7</h3>
+          <p>Подключайте Google, Microsoft, Telegram, Discord, n8n и бесплатные поисковики в Личном кабинете — агенты работают даже при выключенном ПК.</p>
         </article>
-      </div>
-    </section>
-
-    <!-- Cloud Profile, Auth & MCP Dashboard -->
-    <section class="section" id="cloud">
-      <div class="glass-panel">
-        <span class="hero-pill">Stella Cloud • MCP Hub • 24/7</span>
-        <h2>Личный кабинет и облачные агенты</h2>
-        <p class="panel-sub">Подключайте официальные MCP-серверы, Telegram и Discord — задачи работают в облаке, даже когда ноутбук выключен.</p>
-
-        <!-- Auth View -->
-        <div id="authPanel" class="cloud-box">
-          <div class="oauth-row">
-            <button class="oauth-btn" id="quickOneClickBtn" style="background:#1d1d1f;color:#fff;border-color:#1d1d1f;">⚡ Быстрый вход в 1 клик</button>
-            <button class="oauth-btn" id="passkeyBtn">🔑 Face ID / Touch ID / Hello</button>
-          </div>
-          <div class="oauth-row">
-            <button class="oauth-btn" data-oauth="google">G Google</button>
-            <button class="oauth-btn" data-oauth="microsoft">⊞ Microsoft</button>
-            <button class="oauth-btn" data-oauth="github">⌘ GitHub</button>
-            <button class="oauth-btn" data-oauth="telegram">✈ Telegram</button>
-            <button class="oauth-btn" data-oauth="discord">◈ Discord</button>
-          </div>
-          <div class="divider"><span>или по Email</span></div>
-          <div class="form-grid">
-            <input type="text" id="siteName" placeholder="Ваше имя (для регистрации)" />
-            <input type="email" id="siteEmail" placeholder="Email" />
-            <input type="password" id="sitePass" placeholder="Пароль (от 4 символов)" />
-            <select id="siteCountry">
-              <option value="KZ">🇰🇿 Казахстан — Kundelik.kz, BilimLand, eGov</option>
-              <option value="RU" selected>🇷🇺 Россия — Дневник.ру, МЭШ, Госуслуги</option>
-              <option value="OTHER">🌍 Другая страна — Global Workspace</option>
-            </select>
-          </div>
-          <label class="consent-row">
-            <input type="checkbox" id="siteConsent" checked />
-            <span>Даю согласие на запуск облачных задач Стеллы и подключение авторизованных MCP/API интеграций.</span>
-          </label>
-          <div class="install-actions" style="justify-content:center;margin-top:14px;">
-            <button class="btn-small primary" id="siteRegBtn">Создать профиль</button>
-            <button class="btn-small" id="siteLoginBtn">Войти</button>
-          </div>
-          <p id="siteAuthStatus" class="status-msg"></p>
-        </div>
-
-        <!-- Logged-In Dashboard -->
-        <div id="dashPanel" class="cloud-box hidden">
-          <div class="dash-top">
-            <div>
-              <h3 id="dashUserTitle">Профиль</h3>
-              <p id="dashUserMeta" class="panel-sub" style="margin:2px 0 0;"></p>
-            </div>
-            <button class="btn-small" id="siteLogoutBtn">Выйти</button>
-          </div>
-
-          <div class="presets-row" id="dashPresets"></div>
-
-          <div class="dash-grid">
-            <div class="sub-card">
-              <h4>☁️ Облачный агент (24/7)</h4>
-              <select id="cloudAgentRole">
-                <option value="manus">🧠 Manus Research Agent (Автономный)</option>
-                <option value="google">🔵 Google Workspace Agent (Gmail/Docs/Sheets)</option>
-                <option value="microsoft">🟦 Microsoft 365 Agent (Outlook/Teams/Excel)</option>
-                <option value="mail">✉️ Почтовый агент (Все почты)</option>
-                <option value="messengers">💬 Мессенджер-агент (TG/WhatsApp/Discord)</option>
-                <option value="search">🔎 Поисковый агент (Wiki/DuckDuckGo/Web)</option>
-                <option value="automation">⚡ Агент автоматизаций (n8n/Make/GitHub)</option>
-                <option value="study">🎓 Учебный агент (Kundelik/Дневник.ру)</option>
-              </select>
-              <textarea id="cloudPrompt" rows="3" placeholder="Например: проверь курс доллара к тенге и рублю и отправь мне в Telegram..."></textarea>
-              <button class="btn-small primary" id="runCloudTaskBtn" style="margin-top:8px;width:100%;">Запустить в облаке</button>
-              <div id="cloudTasksList" class="tasks-list"></div>
-            </div>
-
-            <div class="sub-card">
-              <h4>🔌 Подключённые MCP и коннекторы</h4>
-              <div id="connsList" class="tasks-list" style="max-height:290px;"></div>
-            </div>
-          </div>
-
-          <!-- Factory MCP Marketplace (24 Built-in & Official MCPs) -->
-          <div class="mcp-store-wrap">
-            <div class="dash-top" style="margin-top:20px;margin-bottom:10px;">
-              <h4>🏭 Заводские MCP-серверы и агенты (24 готовых)</h4>
-            </div>
-            <div class="browser-tabs" id="mcpFilterTabs" style="justify-content:flex-start;margin-bottom:14px;">
-              <button class="b-tab active" data-cat="all">Все (24)</button>
-              <button class="b-tab" data-cat="builtin">Бесплатные (0-клик)</button>
-              <button class="b-tab" data-cat="google">Google</button>
-              <button class="b-tab" data-cat="microsoft">Microsoft</button>
-              <button class="b-tab" data-cat="messengers">Мессенджеры</button>
-              <button class="b-tab" data-cat="mail">Почта</button>
-              <button class="b-tab" data-cat="search">Поисковики</button>
-              <button class="b-tab" data-cat="agents">Manus & Агенты</button>
-              <button class="b-tab" data-cat="automation">Автоматизации</button>
-            </div>
-            <div id="mcpCatalogGrid" class="mcp-grid"></div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -205,7 +105,7 @@
 
         <div class="install-box" id="install">
           <ol class="steps" id="browserSteps">
-            <li>Скачайте <strong>Stella-Installer.bat</strong> (или распакуйте <strong>stella-extension.zip</strong>).</li>
+            <li>Скачайте <strong>Stella-Installer.bat</strong> (или <a href="downloads/stella-extension.zip" download>stella-extension.zip</a>).</li>
             <li>Откройте <code id="extUrl">chrome://extensions</code> и включите <strong>Режим разработчика</strong>.</li>
             <li>Перетащите папку <code>Stella-AI</code> в окно расширений — готово!</li>
           </ol>
@@ -219,7 +119,7 @@
   </main>
 
   <footer class="footer">
-    <p>Стелла AI • Создано с Apple Liquid Glass эстетикой</p>
+    <p>Стелла AI • Apple Liquid Glass Edition</p>
   </footer>
 
   <script src="app.js"></script>
