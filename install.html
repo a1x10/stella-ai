@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Установка и скачивание — Стелла AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <header class="nav-wrap">
+    <nav class="nav-glass">
+      <a href="index.html" class="nav-brand">
+        <span class="mini-orb"></span>
+        <span>Стелла</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">← На главную</a>
+        <a href="account.html">Личный кабинет</a>
+      </div>
+      <a href="account.html" class="nav-cta">Личный кабинет</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" style="padding:52px 20px 24px;">
+      <span class="hero-pill">v4.0 • Windows • Chromium</span>
+      <h1 class="hero-title" style="font-size:clamp(30px,4.8vw,46px);">Установка Стеллы</h1>
+      <p class="hero-sub" style="margin-bottom:24px;">
+        Выберите ваш браузер и скачайте авто-установщик или ZIP-архив расширения.
+      </p>
+      <div class="hero-actions">
+        <a href="downloads/Stella-Installer.bat" download class="btn-primary">
+          <span>Скачать установщик (Windows)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14"/>
+          </svg>
+        </a>
+        <a href="downloads/stella-extension.zip" download class="btn-secondary">
+          Скачать ZIP-архив (v4.0)
+        </a>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:10px;">
+      <div class="glass-panel">
+        <h2>Выберите ваш браузер</h2>
+        <p class="panel-sub">Стелла работает во всех браузерах на базе Chromium</p>
+
+        <div class="browser-tabs" id="browserTabs">
+          <button class="b-tab active" data-browser="chrome">Google Chrome</button>
+          <button class="b-tab" data-browser="edge">Microsoft Edge</button>
+          <button class="b-tab" data-browser="yandex">Яндекс.Браузер</button>
+          <button class="b-tab" data-browser="brave">Brave</button>
+          <button class="b-tab" data-browser="opera">Opera</button>
+        </div>
+
+        <div class="install-box">
+          <ol class="steps">
+            <li>Запустите <strong>Stella-Installer.bat</strong> — он сам распакует Стеллу в <code>%LOCALAPPDATA%\Stella-AI</code> и откроет нужный браузер.</li>
+            <li>На странице <code id="extUrl">chrome://extensions</code> включите тумблер <strong>Режим разработчика</strong>.</li>
+            <li>Перетащите папку <code>Stella-AI</code> в окно расширений (или нажмите «Загрузить распакованное» → <code>Ctrl+V</code> → <code>Enter</code>).</li>
+            <li>Откройте Стеллу и пройдите быструю регистрацию или войдите в свой аккаунт.</li>
+          </ol>
+          <div class="install-actions">
+            <button class="btn-small" id="copyUrlBtn">Скопировать chrome://extensions</button>
+            <a href="downloads/Stella-Installer.bat" download class="btn-small primary">Скачать установщик</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Стелла AI • Apple Liquid Glass Edition</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

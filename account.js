@@ -264,7 +264,7 @@ function renderMcpCatalog() {
       </div>
       <div style="display:flex;gap:6px;margin-top:4px;">
         <button class="btn-small ${isConnected ? "" : "primary"}" data-connect-id="${item.id}" style="flex:1;padding:6px 10px;font-size:12px;">
-          ${isConnected ? "✓ Подключено" : "Подключить"}
+          ${isConnected ? "Отключить" : "Подключить"}
         </button>
         <button class="btn-small" data-use-role="${item.role || "manus"}" style="padding:6px 10px;font-size:12px;">Агент</button>
       </div>
