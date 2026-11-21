@@ -99,9 +99,14 @@
         <!-- Auth View -->
         <div id="authPanel" class="cloud-box">
           <div class="oauth-row">
-            <button class="oauth-btn" data-oauth="Google">G Google</button>
-            <button class="oauth-btn" data-oauth="Telegram">✈ Telegram</button>
-            <button class="oauth-btn" data-oauth="Discord">◈ Discord</button>
+            <button class="oauth-btn" id="quickOneClickBtn" style="background:#1d1d1f;color:#fff;border-color:#1d1d1f;">⚡ Быстрый вход в 1 клик</button>
+            <button class="oauth-btn" id="passkeyBtn">🔑 Face ID / Touch ID / Hello</button>
+          </div>
+          <div class="oauth-row">
+            <button class="oauth-btn" data-oauth="google">G Google</button>
+            <button class="oauth-btn" data-oauth="telegram">✈ Telegram</button>
+            <button class="oauth-btn" data-oauth="discord">◈ Discord</button>
+            <button class="oauth-btn" data-oauth="github">⌘ GitHub</button>
           </div>
           <div class="divider"><span>или по Email</span></div>
           <div class="form-grid">

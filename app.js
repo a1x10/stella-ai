@@ -314,10 +314,125 @@ siteRegBtn?.addEventListener("click", () => doAuth("register"));
 siteLoginBtn?.addEventListener("click", () => doAuth("login"));
 siteLogoutBtn?.addEventListener("click", () => saveSession(null));
 
-document.querySelectorAll(".oauth-btn").forEach((btn) => {
+// Handle OAuth callback redirect (#stella_token=...)
+(async function handleOAuthRedirect() {
+  const hash = location.hash || "";
+  const m = hash.match(/stella_token=(stl_[a-zA-Z0-9]+)/);
+  if (!m) return;
+  const token = m[1];
+  history.replaceState(null, "", location.pathname + "#cloud");
+  try {
+    const res = await fetch(`${CLOUD_API}/api/profile`, { headers: { "X-Stella-Token": token } });
+    const data = await res.json();
+    if (data.ok && data.user) saveSession({ token, user: data.user });
+  } catch (_) {}
+})();
+
+// 1-Click Instant Login (0 setup, works immediately!)
+document.getElementById("quickOneClickBtn")?.addEventListener("click", async () => {
+  if (!siteConsent.checked) {
+    siteAuthStatus.textContent = "Подтвердите согласие ниже для быстрого входа.";
+    return;
+  }
+  siteAuthStatus.textContent = "Создаю профиль в 1 клик...";
+  let devId = localStorage.getItem("stella_device_id");
+  if (!devId) {
+    devId = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("stella_device_id", devId);
+  }
+  try {
+    const res = await fetch(`${CLOUD_API}/api/auth/quick`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        provider: "quick",
+        deviceId: devId,
+        name: siteName.value.trim() || "Пользователь Стеллы",
+        country: siteCountry.value,
+      }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      siteAuthStatus.textContent = "";
+      saveSession({ token: data.token, user: data.user });
+    } else {
+      siteAuthStatus.textContent = data.error || "Ошибка входа";
+    }
+  } catch (e) {
+    siteAuthStatus.textContent = "Ошибка сети: " + String(e.message || e);
+  }
+});
+
+// Native Passkey / Biometrics (Touch ID / Face ID / Windows Hello)
+document.getElementById("passkeyBtn")?.addEventListener("click", async () => {
+  if (!siteConsent.checked) {
+    siteAuthStatus.textContent = "Подтвердите согласие ниже для входа по биометрии.";
+    return;
+  }
+  if (!window.PublicKeyCredential) {
+    siteAuthStatus.textContent = "Ваш браузер не поддерживает Passkey — используйте «Быстрый вход в 1 клик».";
+    return;
+  }
+  siteAuthStatus.textContent = "Подтвердите Touch ID / Face ID / Windows Hello...";
+  try {
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const userId = crypto.getRandomValues(new Uint8Array(16));
+    const cred = await navigator.credentials.create({
+      publicKey: {
+        challenge,
+        rp: { name: "Stella AI Cloud" },
+        user: {
+          id: userId,
+          name: siteEmail.value.trim() || "stella-user",
+          displayName: siteName.value.trim() || "Stella User",
+        },
+        pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+        authenticatorSelection: { userVerification: "preferred" },
+        timeout: 60000,
+      },
+    });
+    const credId = btoa(String.fromCharCode(...new Uint8Array(cred.rawId))).replace(/[^a-zA-Z0-9]/g, "").slice(0, 20);
+    const res = await fetch(`${CLOUD_API}/api/auth/quick`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        provider: "passkey",
+        deviceId: credId,
+        name: siteName.value.trim() || "Passkey User",
+        country: siteCountry.value,
+      }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      siteAuthStatus.textContent = "";
+      saveSession({ token: data.token, user: data.user });
+    }
+  } catch (e) {
+    siteAuthStatus.textContent = "Биометрия отменена. Можно войти в 1 клик или по Email.";
+  }
+});
+
+// Real OAuth 2.0 Providers (Google, Telegram, Discord, GitHub)
+let activeProviders = {};
+fetch(`${CLOUD_API}/api/auth/providers`)
+  .then((r) => r.json())
+  .then((d) => { if (d?.providers) activeProviders = d.providers; })
+  .catch(() => {});
+
+document.querySelectorAll(".oauth-btn[data-oauth]").forEach((btn) => {
   btn.addEventListener("click", () => {
     const prov = btn.getAttribute("data-oauth");
-    siteAuthStatus.textContent = `OAuth через ${prov} готов к привязке Client ID в Cloudflare Worker. Пока можно мгновенно войти по Email ниже.`;
+    if (activeProviders[prov]) {
+      location.href = `${CLOUD_API}/api/auth/oauth/${prov}?country=${encodeURIComponent(siteCountry.value)}`;
+      return;
+    }
+    const hints = {
+      google: "Для входа через Google нужен GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET в Cloudflare Secrets (бэкенд уже готов!). Пока нажми «⚡ Быстрый вход в 1 клик».",
+      telegram: "Для Telegram нужен TELEGRAM_BOT_TOKEN от @BotFather в Cloudflare Secrets (HMAC-проверка уже готова!). Пока нажми «⚡ Быстрый вход в 1 клик».",
+      discord: "Для Discord нужен DISCORD_CLIENT_ID и DISCORD_CLIENT_SECRET в Cloudflare Secrets (OAuth уже готов!). Пока нажми «⚡ Быстрый вход в 1 клик».",
+      github: "Для GitHub нужен GITHUB_CLIENT_ID и GITHUB_CLIENT_SECRET в Cloudflare Secrets (OAuth уже готов!). Пока нажми «⚡ Быстрый вход в 1 клик».",
+    };
+    siteAuthStatus.textContent = hints[prov] || "Нажмите «Быстрый вход в 1 клик».";
   });
 });
 
