@@ -459,3 +459,16 @@ body {
 .task-item { padding: 10px 12px; border-radius: 13px; background: #ffffff; border: 1px solid var(--border); font-size: 13px; }
 .task-item strong { display: block; margin-bottom: 4px; color: var(--text); }
 .task-item p { color: var(--muted); white-space: pre-wrap; font-size: 12.5px; }
+.mcp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 10px; }
+.mcp-card {
+  padding: 13px; border-radius: 16px; background: #ffffff; border: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+.mcp-card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.mcp-card-title { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.mcp-badge { font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 999px; background: rgba(0, 122, 255, 0.09); color: #0066d6; }
+.mcp-badge.free { background: rgba(52, 199, 89, 0.14); color: #1e8e3e; }
+.mcp-card-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.mcp-card-fields { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
+.mcp-card-fields input { padding: 6px 9px !important; font-size: 12px !important; border-radius: 9px !important; }

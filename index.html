@@ -140,24 +140,44 @@
           <div class="dash-grid">
             <div class="sub-card">
               <h4>☁️ Облачный агент (24/7)</h4>
-              <textarea id="cloudPrompt" rows="3" placeholder="Например: подготовь план на день и отправь мне в Telegram..."></textarea>
+              <select id="cloudAgentRole">
+                <option value="manus">🧠 Manus Research Agent (Автономный)</option>
+                <option value="google">🔵 Google Workspace Agent (Gmail/Docs/Sheets)</option>
+                <option value="microsoft">🟦 Microsoft 365 Agent (Outlook/Teams/Excel)</option>
+                <option value="mail">✉️ Почтовый агент (Все почты)</option>
+                <option value="messengers">💬 Мессенджер-агент (TG/WhatsApp/Discord)</option>
+                <option value="search">🔎 Поисковый агент (Wiki/DuckDuckGo/Web)</option>
+                <option value="automation">⚡ Агент автоматизаций (n8n/Make/GitHub)</option>
+                <option value="study">🎓 Учебный агент (Kundelik/Дневник.ру)</option>
+              </select>
+              <textarea id="cloudPrompt" rows="3" placeholder="Например: проверь курс доллара к тенге и рублю и отправь мне в Telegram..."></textarea>
               <button class="btn-small primary" id="runCloudTaskBtn" style="margin-top:8px;width:100%;">Запустить в облаке</button>
               <div id="cloudTasksList" class="tasks-list"></div>
             </div>
 
             <div class="sub-card">
-              <h4>🔌 Подключить MCP / Telegram / Discord</h4>
-              <select id="connType">
-                <option value="mcp">MCP Сервер (JSON-RPC HTTP)</option>
-                <option value="telegram">Telegram Bot API</option>
-                <option value="discord">Discord Webhook</option>
-              </select>
-              <input type="text" id="connName" placeholder="Название (напр. Мой VPS MCP)" />
-              <input type="text" id="connField1" placeholder="URL MCP-сервера / Bot Token / Webhook URL" />
-              <input type="text" id="connField2" placeholder="API Key (опц.) или Chat ID для Telegram" />
-              <button class="btn-small primary" id="addConnBtn" style="margin-top:6px;width:100%;">Привязать интеграцию</button>
-              <div id="connsList" class="tasks-list"></div>
+              <h4>🔌 Подключённые MCP и коннекторы</h4>
+              <div id="connsList" class="tasks-list" style="max-height:290px;"></div>
             </div>
+          </div>
+
+          <!-- Factory MCP Marketplace (24 Built-in & Official MCPs) -->
+          <div class="mcp-store-wrap">
+            <div class="dash-top" style="margin-top:20px;margin-bottom:10px;">
+              <h4>🏭 Заводские MCP-серверы и агенты (24 готовых)</h4>
+            </div>
+            <div class="browser-tabs" id="mcpFilterTabs" style="justify-content:flex-start;margin-bottom:14px;">
+              <button class="b-tab active" data-cat="all">Все (24)</button>
+              <button class="b-tab" data-cat="builtin">Бесплатные (0-клик)</button>
+              <button class="b-tab" data-cat="google">Google</button>
+              <button class="b-tab" data-cat="microsoft">Microsoft</button>
+              <button class="b-tab" data-cat="messengers">Мессенджеры</button>
+              <button class="b-tab" data-cat="mail">Почта</button>
+              <button class="b-tab" data-cat="search">Поисковики</button>
+              <button class="b-tab" data-cat="agents">Manus & Агенты</button>
+              <button class="b-tab" data-cat="automation">Автоматизации</button>
+            </div>
+            <div id="mcpCatalogGrid" class="mcp-grid"></div>
           </div>
         </div>
       </div>

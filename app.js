@@ -9,7 +9,7 @@ const BROWSER_DATA = {
 };
 
 let currentUrl = "chrome://extensions";
-const tabs = document.querySelectorAll(".b-tab");
+const tabs = document.querySelectorAll("#browserTabs .b-tab");
 const extUrlEl = document.getElementById("extUrl");
 const copyUrlBtn = document.getElementById("copyUrlBtn");
 
@@ -34,7 +34,7 @@ copyUrlBtn?.addEventListener("click", async () => {
 });
 
 // =========================================================
-// STELLA CLOUD AUTH, PROFILE, MCP HUB & 24/7 CLOUD AGENTS
+// STELLA CLOUD AUTH, PROFILE, FACTORY MCP STORE & 24/7 AGENTS
 // =========================================================
 const navProfileBtn = document.getElementById("navProfileBtn");
 const authPanel = document.getElementById("authPanel");
@@ -52,18 +52,18 @@ const siteAuthStatus = document.getElementById("siteAuthStatus");
 const dashUserTitle = document.getElementById("dashUserTitle");
 const dashUserMeta = document.getElementById("dashUserMeta");
 const dashPresets = document.getElementById("dashPresets");
+const cloudAgentRole = document.getElementById("cloudAgentRole");
 const cloudPrompt = document.getElementById("cloudPrompt");
 const runCloudTaskBtn = document.getElementById("runCloudTaskBtn");
 const cloudTasksList = document.getElementById("cloudTasksList");
-
-const connType = document.getElementById("connType");
-const connName = document.getElementById("connName");
-const connField1 = document.getElementById("connField1");
-const connField2 = document.getElementById("connField2");
-const addConnBtn = document.getElementById("addConnBtn");
 const connsList = document.getElementById("connsList");
+const mcpCatalogGrid = document.getElementById("mcpCatalogGrid");
+const mcpFilterTabs = document.querySelectorAll("#mcpFilterTabs .b-tab");
 
 let session = null;
+let mcpCatalog = [];
+let activeCat = "all";
+
 try {
   session = JSON.parse(localStorage.getItem("stella_cloud_session") || "null");
 } catch (_) {}
@@ -78,6 +78,119 @@ function saveSession(s) {
 function escapeHtml(str) {
   return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
+
+async function loadMcpCatalog() {
+  if (mcpCatalog.length) {
+    renderMcpCatalog();
+    return;
+  }
+  try {
+    const res = await fetch(`${CLOUD_API}/api/mcp/catalog`);
+    const data = await res.json();
+    if (data.ok && Array.isArray(data.catalog)) {
+      mcpCatalog = data.catalog;
+      renderMcpCatalog();
+    }
+  } catch (_) {}
+}
+
+function renderMcpCatalog() {
+  if (!mcpCatalogGrid) return;
+  const connectedIds = new Set((session?.user?.connectors || []).map((c) => c.id));
+  const filtered = mcpCatalog.filter((item) => {
+    if (activeCat === "all") return true;
+    if (activeCat === "builtin") return item.mode === "builtin";
+    return item.cat === activeCat;
+  });
+
+  mcpCatalogGrid.innerHTML = "";
+  filtered.forEach((item) => {
+    const isConnected = connectedIds.has(item.id);
+    const card = document.createElement("div");
+    card.className = "mcp-card";
+    card.innerHTML = `
+      <div>
+        <div class="mcp-card-head">
+          <span class="mcp-card-title">${escapeHtml(item.name)}</span>
+          <span class="mcp-badge ${item.mode === "builtin" ? "free" : ""}">${escapeHtml(item.badge)}</span>
+        </div>
+        <p class="mcp-card-desc" style="margin-top:6px;">${escapeHtml(item.desc)}</p>
+        ${
+          item.mode !== "builtin" && !isConnected
+            ? `<div class="mcp-card-fields">
+                 <input type="text" data-f1 placeholder="${escapeHtml(item.field1 || "URL / Token")}" />
+                 ${item.field2 ? `<input type="text" data-f2 placeholder="${escapeHtml(item.field2)}" />` : ""}
+               </div>`
+            : ""
+        }
+      </div>
+      <div style="display:flex;gap:6px;margin-top:4px;">
+        <button class="btn-small ${isConnected ? "" : "primary"}" data-connect-id="${item.id}" style="flex:1;padding:6px 10px;font-size:12px;">
+          ${isConnected ? "✓ Подключено" : "Подключить"}
+        </button>
+        <button class="btn-small" data-use-role="${item.role || "manus"}" style="padding:6px 10px;font-size:12px;" title="Выбрать этого агента">Агент</button>
+      </div>
+    `;
+
+    card.querySelector("[data-use-role]").addEventListener("click", () => {
+      if (cloudAgentRole && item.role) cloudAgentRole.value = item.role;
+      cloudPrompt?.focus();
+    });
+
+    card.querySelector("[data-connect-id]").addEventListener("click", async () => {
+      const current = [...(session.user.connectors || [])];
+      if (isConnected) {
+        const next = current.filter((c) => c.id !== item.id);
+        await updateProfileConnectors(next);
+        return;
+      }
+
+      const entry = {
+        id: item.id,
+        name: item.name,
+        type: item.mode,
+        mode: item.mode,
+        enabled: true,
+      };
+
+      if (item.mode !== "builtin") {
+        const f1 = card.querySelector("[data-f1]")?.value?.trim() || "";
+        const f2 = card.querySelector("[data-f2]")?.value?.trim() || "";
+        if (!f1) {
+          card.querySelector("[data-f1]")?.focus();
+          return;
+        }
+        if (item.mode === "telegram") {
+          entry.botToken = f1;
+          entry.chatId = f2;
+        } else if (item.mode === "whatsapp") {
+          entry.phoneId = f1;
+          entry.accessToken = f2;
+        } else if (item.mode === "discord" || item.mode === "webhook") {
+          entry.webhookUrl = f1;
+          entry.apiKey = f2;
+        } else {
+          entry.endpoint = f1;
+          entry.apiKey = f2;
+        }
+      }
+
+      current.push(entry);
+      await updateProfileConnectors(current);
+    });
+
+    mcpCatalogGrid.appendChild(card);
+  });
+}
+
+mcpFilterTabs.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    mcpFilterTabs.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeCat = btn.getAttribute("data-cat") || "all";
+    renderMcpCatalog();
+  });
+});
 
 function renderCloudUI() {
   if (!session?.token || !session?.user) {
@@ -100,22 +213,25 @@ function renderCloudUI() {
     .join("");
 
   renderConnectors();
+  loadMcpCatalog();
   loadCloudTasks();
 }
 
 function renderConnectors() {
   const list = session?.user?.connectors || [];
   if (!list.length) {
-    connsList.innerHTML = `<div class="task-item"><p>Нет подключённых MCP / ботов. Добавьте Telegram, Discord или URL вашего MCP-сервера.</p></div>`;
+    connsList.innerHTML = `<div class="task-item"><p>Выберите любые заводские MCP в каталоге ниже.</p></div>`;
     return;
   }
   connsList.innerHTML = list
     .map(
       (c, i) => `
-      <div class="task-item">
-        <strong>${escapeHtml(c.name)} (${escapeHtml(c.type.toUpperCase())})</strong>
-        <p>${escapeHtml(c.endpoint || c.webhookUrl || (c.chatId ? "Chat ID: " + c.chatId : "Подключено"))}</p>
-        <button class="btn-small" data-del-conn="${i}" style="margin-top:6px;padding:4px 10px;font-size:11.5px;">Отключить</button>
+      <div class="task-item" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <div>
+          <strong>${escapeHtml(c.name)}</strong>
+          <p>${escapeHtml(c.mode === "builtin" ? "Бесплатный встроенный MCP" : c.endpoint || c.webhookUrl || "Активно")}</p>
+        </div>
+        <button class="btn-small" data-del-conn="${i}" style="padding:4px 9px;font-size:11.5px;">×</button>
       </div>`
     )
     .join("");
@@ -153,14 +269,14 @@ async function loadCloudTasks() {
     const data = await res.json();
     const tasks = data.tasks || [];
     if (!tasks.length) {
-      cloudTasksList.innerHTML = `<div class="task-item"><p>Облачных задач пока нет. Напишите задачу выше — она выполнится на сервере 24/7.</p></div>`;
+      cloudTasksList.innerHTML = `<div class="task-item"><p>Выберите агента сверху и отправьте задачу — она выполнится в облаке 24/7.</p></div>`;
       return;
     }
     cloudTasksList.innerHTML = tasks
       .map(
         (t) => `
         <div class="task-item">
-          <strong>${escapeHtml(t.prompt)}</strong>
+          <strong>[${escapeHtml((t.agentRole || "manus").toUpperCase())}] ${escapeHtml(t.prompt)}</strong>
           <p>${escapeHtml(t.result)}</p>
         </div>`
       )
@@ -209,7 +325,7 @@ runCloudTaskBtn?.addEventListener("click", async () => {
   const prompt = cloudPrompt.value.trim();
   if (!prompt || !session?.token) return;
   runCloudTaskBtn.disabled = true;
-  runCloudTaskBtn.textContent = "Выполняю в облаке...";
+  runCloudTaskBtn.textContent = "Агент работает в облаке...";
   try {
     const res = await fetch(`${CLOUD_API}/api/cloud-tasks`, {
       method: "POST",
@@ -217,7 +333,10 @@ runCloudTaskBtn?.addEventListener("click", async () => {
         "Content-Type": "application/json",
         "X-Stella-Token": session.token,
       },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({
+        prompt,
+        agentRole: cloudAgentRole?.value || "manus",
+      }),
     });
     const data = await res.json();
     if (data.ok) {
@@ -228,31 +347,6 @@ runCloudTaskBtn?.addEventListener("click", async () => {
     runCloudTaskBtn.disabled = false;
     runCloudTaskBtn.textContent = "Запустить в облаке";
   }
-});
-
-addConnBtn?.addEventListener("click", async () => {
-  const type = connType.value;
-  const name = connName.value.trim() || type.toUpperCase();
-  const f1 = connField1.value.trim();
-  const f2 = connField2.value.trim();
-  if (!f1) return;
-
-  const entry = { type, name, enabled: true };
-  if (type === "mcp") {
-    entry.endpoint = f1;
-    entry.apiKey = f2;
-  } else if (type === "telegram") {
-    entry.botToken = f1;
-    entry.chatId = f2;
-  } else if (type === "discord") {
-    entry.webhookUrl = f1;
-  }
-
-  const next = [...(session.user.connectors || []), entry];
-  await updateProfileConnectors(next);
-  connName.value = "";
-  connField1.value = "";
-  connField2.value = "";
 });
 
 renderCloudUI();
