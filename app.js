@@ -427,10 +427,11 @@ document.querySelectorAll(".oauth-btn[data-oauth]").forEach((btn) => {
       return;
     }
     const hints = {
-      google: "Для входа через Google нужен GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET в Cloudflare Secrets (бэкенд уже готов!). Пока нажми «⚡ Быстрый вход в 1 клик».",
-      telegram: "Для Telegram нужен TELEGRAM_BOT_TOKEN от @BotFather в Cloudflare Secrets (HMAC-проверка уже готова!). Пока нажми «⚡ Быстрый вход в 1 клик».",
-      discord: "Для Discord нужен DISCORD_CLIENT_ID и DISCORD_CLIENT_SECRET в Cloudflare Secrets (OAuth уже готов!). Пока нажми «⚡ Быстрый вход в 1 клик».",
-      github: "Для GitHub нужен GITHUB_CLIENT_ID и GITHUB_CLIENT_SECRET в Cloudflare Secrets (OAuth уже готов!). Пока нажми «⚡ Быстрый вход в 1 клик».",
+      google: "Для входа через Google нужен GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET в Cloudflare Secrets (бэкенд уже готов!).",
+      microsoft: "Для входа через Microsoft нужен MICROSOFT_CLIENT_ID и MICROSOFT_CLIENT_SECRET в Cloudflare Secrets.",
+      telegram: "Для Telegram нужен TELEGRAM_BOT_TOKEN от @BotFather в Cloudflare Secrets.",
+      discord: "Для Discord нужен DISCORD_CLIENT_ID и DISCORD_CLIENT_SECRET в Cloudflare Secrets.",
+      github: "Для GitHub нужен GITHUB_CLIENT_ID и GITHUB_CLIENT_SECRET в Cloudflare Secrets (бэкенд уже готов!).",
     };
     siteAuthStatus.textContent = hints[prov] || "Нажмите «Быстрый вход в 1 клик».";
   });
